@@ -2,6 +2,7 @@ import pyttsx3
 import speech_recognition as sr
 import datetime
 import openai
+import sys
 def arabica_init():
     arabica=pyttsx3.init()
     voice=arabica.getProperty('voices')
@@ -28,20 +29,23 @@ def speak(audio):
     arabica.runAndWait()
 def generate_chatbot_response(input_text):
     # Thiết lập API key của bạn
-    openai.api_key = "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"
+    openai.api_key = "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"
     
     # Gọi API để tạo câu trả lời từ mô hình
-    response = openai.Completion.create(
+    for response in openai.Completion.create(
         engine="text-davinci-003", # Loại mô hình ngôn ngữ
         prompt=input_text,
-        max_tokens=500,
+        max_tokens=2048,
         n=1, # Số lượng kết quả trả về
         stop=None, # Điều kiện dừng để kết thúc câu trả lời
-        temperature=1 # Độ đa dạng của kết quả (từ 0 đến 1)
-    )
+        temperature=0.5, # Độ đa dạng của kết quả (từ 0 đến 1)
+        stream=True
+    ):
+        sys.stdout.write(response.choices[0].text)
+        sys.stdout.flush()
     # Lấy câu trả lời từ kết quả trả về
-    answer = response['choices'][0]['text']
-    return answer
+    """ answer = response['choices'][0]['text']
+    return answer """
 """ try:
     while True:
         # Sử dụng hàm để tạo trả lời từ trợ lý ảo
@@ -49,10 +53,10 @@ def generate_chatbot_response(input_text):
         # input_text = listening()
         if("bye" in input_text):
             break
-        response = generate_chatbot_response(input_text)
+        generate_chatbot_response(input_text)
 
         # In câu trả lời ra màn hình
         # speak(response)
-        print(response)
+        # print(response)
 except:
     pass """
