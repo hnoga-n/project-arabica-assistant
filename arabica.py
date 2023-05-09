@@ -30,7 +30,7 @@ def speak(audio):
     arabica.runAndWait()
 def generate_chatbot_response(input_text):
     # Thiết lập API key của bạn
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     
     # Gọi API để tạo câu trả lời từ mô hình

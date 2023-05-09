@@ -89,9 +89,9 @@ def split_string1(string):
 def Answer(a):
     text.tag_configure("left", justify='left')
     text.insert(tk.END,"Arabica:\n","left")
-    openai.api_key = "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"
+    openai.api_key = "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"
     # Gọi API để tạo câu trả lời từ model
-    for response in openai.Completion.create(
+    for response in openai.ChatCompletion.create(
         engine="text-davinci-003", # Loại model ngôn ngữ
         prompt=a,
         max_tokens=2048,
@@ -127,7 +127,7 @@ def Ask():
     text.config(state=NORMAL)
     text.tag_configure("right", justify='right')
     content = textfield.get()
-    text.insert(tk.END,"You:\n", "right")
+    text.insert(tk.END,"\nYou:\n", "right")
     s = split_string(content)
     for i in s:
         text.insert(tk.END, i + "\n", "right")
@@ -146,7 +146,7 @@ def microphone():
     response = arabica.listening()
     text.config(state=NORMAL)
     text.tag_configure("right", justify='right')
-    text.insert(tk.END,"You:\n" + response, "right")
+    text.insert(tk.END,"\nYou:\n" + response, "right")
     text.insert(tk.END, "\n", "right")
     text.see(tk.END)
     main(response)
@@ -158,25 +158,15 @@ button_right.place(x=430,y=430)
 button_mic = tk.Button(root, text="Mic", command=microphone, height=2 , width=7)
 button_mic.place(x=360,y=430)
 
-def hello():
-    txt = "Hi! How can I help you?"
-    LowerAnswer(txt)
-
 def main(content):
     a = content
     if("bye" in a):
         LowerAnswer("See you again!")
-
-    elif(("Hello" in a) | ("hi" in a)):
-        hello()
     elif(a==""):
         LowerAnswer("How can I help you ?")
-
     elif 'time' in a.lower():
         import datetime
         LowerAnswer("Let me check the time for you...\nThe current time is " + datetime.datetime.now().strftime('%H:%M'))
     else: 
         Answer(a)
-
-hello()
 root.mainloop()
