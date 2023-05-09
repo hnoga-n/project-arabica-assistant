@@ -4,7 +4,7 @@ from PIL import Image, ImageTk
 from tkinter import font
 import time
 import openai
-
+import sys
 # from sqlalchemy.util import ABC
 from sqlalchemy.util import classproperty
 from abc import ABC, abstractmethod
@@ -38,7 +38,7 @@ frame.propagate(False)
 # scrollbar=tk.Scrollbar(frame)
 # scrollbar.pack(side='right')
 
-text_font = font.Font(family="Arial", size=16)
+text_font = font.Font(family="Arial", size=13)
 text=tk.Text(frame, bg='white', fg='black' , font=text_font)
 text.pack(side='left')
 
@@ -88,16 +88,10 @@ def split_string1(string):
 def Answer(a):
     text.tag_configure("left", justify='left')
     text.insert(tk.END,"Arabica:\n","left")
-    """ s = split_string1(a)
-    for vd in s:
-        strs=split_string(vd)
-        for i in strs:
-            text.insert(tk.END,i + "\n","left") """
-    openai.api_key = "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"
-    
-    # Gọi API để tạo câu trả lời từ mô hình
+    openai.api_key = "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"
+    # Gọi API để tạo câu trả lời từ model
     for response in openai.Completion.create(
-        engine="text-davinci-003", # Loại mô hình ngôn ngữ
+        engine="text-davinci-003", # Loại model ngôn ngữ
         prompt=a,
         max_tokens=2048,
         n=1, # Số lượng kết quả trả về
@@ -105,8 +99,24 @@ def Answer(a):
         temperature=0.5, # Độ đa dạng của kết quả (từ 0 đến 1)
         stream=True
     ):
-        text.insert(tk.END,response.choices[0].text + " ","left")
+        # sys.stdout.write(response.choices[0].text)
+        # sys.stdout.flush()
+        text.insert(tk.END,response.choices[0].text,"left")
+        text.update_idletasks()
+        text.see(tk.END)
     # text.insert(tk.END,"\n", "left")
+
+    text.config(state=DISABLED)
+
+def LowerAnswer(a):
+    text.tag_configure("left", justify='left')
+    text.insert(tk.END,"Arabica:\n","left")
+    s = split_string1(a)
+    for vd in s:
+        strs=split_string(vd)
+        for i in strs:
+            text.insert(tk.END,i + "\n","left")
+    text.insert(tk.END,"\n", "left")
     text.see(tk.END)
     text.config(state=DISABLED)
 
@@ -119,7 +129,6 @@ def Ask():
     s = split_string(content)
     for i in s:
         text.insert(tk.END, i + "\n", "right")
-
     text.insert(tk.END, "\n", "right")
     text.see(tk.END)
     main(content)
@@ -148,29 +157,23 @@ button_mic = tk.Button(root, text="Mic", command=microphone, height=2 , width=7)
 button_mic.place(x=360,y=430)
 
 def hello():
-    txt = "Hi! I'm Arabica. How can I help you?"
-    Answer(txt)
+    txt = "Hi! How can I help you?"
+    LowerAnswer(txt)
 
 def main(content):
-    tempt = 1
-    while tempt!=0:
-        a = content
-        if("bye" in a):
-            Answer("See you again!")
-            tempt=1
-        elif(("Hi" in a) | ("hi" in a)):
-            hello()
-            tempt=1
-        elif(a==""):
-            Answer("How can I help you ?")
-            tempt=1
-        elif 'time' in a.lower():
-            import datetime
-            Answer("Let me check the time for you...\nThe current time is " + datetime.datetime.now().strftime('%H:%M'))
-        else: 
-            Answer(a)
-            tempt=1
-        tempt=0
-        # arabica.speak(response)
+    a = content
+    if("bye" in a):
+        LowerAnswer("See you again!")
+
+    elif(("Hello" in a) | ("hi" in a)):
+        hello()
+    elif(a==""):
+        LowerAnswer("How can I help you ?")
+
+    elif 'time' in a.lower():
+        import datetime
+        LowerAnswer("Let me check the time for you...\nThe current time is " + datetime.datetime.now().strftime('%H:%M'))
+    else: 
+        Answer(a)
 hello()
 root.mainloop()
