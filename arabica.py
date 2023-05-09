@@ -3,6 +3,7 @@ import speech_recognition as sr
 import datetime
 import openai
 import sys
+
 def arabica_init():
     arabica=pyttsx3.init()
     voice=arabica.getProperty('voices')
@@ -29,7 +30,8 @@ def speak(audio):
     arabica.runAndWait()
 def generate_chatbot_response(input_text):
     # Thiết lập API key của bạn
-    openai.api_key = "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"
+    openai.api_key = "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"
+
     
     # Gọi API để tạo câu trả lời từ mô hình
     for response in openai.Completion.create(
@@ -60,3 +62,4 @@ def generate_chatbot_response(input_text):
         # print(response)
 except:
     pass """
+
