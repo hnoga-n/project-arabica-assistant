@@ -38,6 +38,7 @@ frame.propagate(False)
 # scrollbar=tk.Scrollbar(frame)
 # scrollbar.pack(side='right')
 
+
 text_font = font.Font(family="Arial", size=13)
 text=tk.Text(frame, bg='white', fg='black' , font=text_font)
 text.pack(side='left')
@@ -117,6 +118,7 @@ def LowerAnswer(a):
         for i in strs:
             text.insert(tk.END,i + "\n","left")
     text.insert(tk.END,"\n", "left")
+
     text.see(tk.END)
     text.config(state=DISABLED)
 
@@ -175,5 +177,6 @@ def main(content):
         LowerAnswer("Let me check the time for you...\nThe current time is " + datetime.datetime.now().strftime('%H:%M'))
     else: 
         Answer(a)
+
 hello()
 root.mainloop()

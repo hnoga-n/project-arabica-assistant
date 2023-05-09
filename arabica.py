@@ -31,6 +31,7 @@ def speak(audio):
 def generate_chatbot_response(input_text):
     # Thiết lập API key của bạn
     openai.api_key = "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"
+
     
     # Gọi API để tạo câu trả lời từ mô hình
     for response in openai.Completion.create(
@@ -61,3 +62,4 @@ def generate_chatbot_response(input_text):
         # print(response)
 except:
     pass """
+
